@@ -1,0 +1,11 @@
+# Ignore log files
+wget-log
+
+# Ignore hidden project files
+.idea/
+.ipynb_checkpoints/
+
+# Ignore virtual env or Python cache
+__pycache__/
+*.pyc
+*.pyo
