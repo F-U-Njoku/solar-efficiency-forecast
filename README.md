@@ -45,9 +45,8 @@ The project follows a **fully cloud-integrated ML workflow**:
 - MLflow is used to track all experiments, parameters, and metrics.  
 - Best models are registered in the MLflow Model Registry for reproducibility and version control.  
 
-📸 *Insert screenshot of MLflow UI showing experiments and registered models here.*  
-
----
+![tracking](images/tracking.png)
+![registry](images/registry.png)---
 
 ### **Workflow Orchestration** – **4 points**  
 - Airflow orchestrates the entire pipeline: from data ingestion to training and deployment.  
