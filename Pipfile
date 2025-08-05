@@ -11,6 +11,11 @@ boto3 = "*"
 awscli = "*"
 seaborn = "*"
 psycopg2 = "*"
+apache-airflow = "*"
+apache-airflow-providers-amazon = "*"
+apache-airflow-providers-postgres = "*"
+flask-appbuilder = "*"
+awsebcli = "*"
 
 [dev-packages]
 jupyter = "*"

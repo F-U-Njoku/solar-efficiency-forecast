@@ -4,6 +4,7 @@ wget-log
 # Ignore hidden project files
 .idea/
 .ipynb_checkpoints/
+deployment/.gitignore
 
 # Ignore virtual env or Python cache
 __pycache__/

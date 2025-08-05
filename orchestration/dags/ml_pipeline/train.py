@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 class MLExperimentTracker:
-    def __init__(self, experiment_name="Solar_Efficiency_Prediction", s3_bucket=None, aws_region='eu-west-1'):
+    def __init__(self, experiment_name="Solar_Efficiency_Prediction", s3_bucket=None,
+                 aws_region='eu-west-1', tracking_uri=None):
         """
         Initialize MLflow experiment tracker with S3 artifact storage
 
@@ -36,24 +37,24 @@ class MLExperimentTracker:
         self.aws_region = aws_region
 
         # Configure MLflow with S3 artifact storage
-        self._setup_mlflow()
+        self._setup_mlflow(tracking_uri)
 
         # Create or get experiment
         try:
             self.experiment_id = mlflow.create_experiment(
-                experiment_name,
-                artifact_location=f"s3://{s3_bucket}/mlflow-artifacts/{experiment_name}" if s3_bucket else None
+                self.experiment_name,
+                artifact_location=f"s3://{s3_bucket}/mlflow-artifacts/{self.experiment_name}" if s3_bucket else None
             )
         except mlflow.exceptions.MlflowException:
-            self.experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
+            self.experiment_id = mlflow.get_experiment_by_name(self.experiment_name).experiment_id
 
-        mlflow.set_experiment(experiment_name)
+        mlflow.set_experiment(self.experiment_name)
 
-    def _setup_mlflow(self):
+    def _setup_mlflow(self, tracking_uri):
         """Setup MLflow configuration for S3"""
 
         # Set MLflow tracking URI (adjust as needed)
-        mlflow.set_tracking_uri("postgresql://uche:8115@localhost/mlops")
+        mlflow.set_tracking_uri(tracking_uri)
 
         if self.s3_bucket:
             # Verify S3 access
@@ -329,7 +330,7 @@ class MLExperimentTracker:
 
 
 # Example usage functions
-def run_ml_experiments(data_path="your_data.csv", s3_bucket="your-mlflow-bucket", aws_region='eu-west-1'):
+def run_ml_experiments(data_path, experiment_name, s3_bucket, aws_region):
     """Main function to run all experiments with S3 storage"""
 
     # Load data
@@ -337,7 +338,7 @@ def run_ml_experiments(data_path="your_data.csv", s3_bucket="your-mlflow-bucket"
 
     # Initialize experiment tracker with S3
     tracker = MLExperimentTracker(
-        experiment_name="Solar_Efficiency_Prediction_S3",
+        experiment_name=experiment_name,
         s3_bucket=s3_bucket,
         aws_region=aws_region
     )
@@ -380,7 +381,8 @@ if __name__ == "__main__":
     setup_aws_credentials()
 
     results, tracker = run_ml_experiments(
-        data_path="datasets/train.csv",
+        data_path="../../../datasets/train.csv",
+        experiment_name="solar-experiment",
         s3_bucket="solarefficiency",
         aws_region="eu-west-1"
     )
